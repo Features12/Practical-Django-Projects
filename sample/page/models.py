@@ -17,6 +17,7 @@ class Category(models.Model):
         db_table = 'Category'
 
 
+# модель товара
 class Good(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name='Name')
     descriptions = models.TextField()
