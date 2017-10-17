@@ -54,3 +54,10 @@ class BlogArticle(models.Model):
 
     class Meta:
         db_table = 'BlogArticle'
+
+
+class New(models.Model):
+    title = models.CharField(max_length=100, db_index=True)
+    description = models.TextField()
+    content = models.TextField()
+    pub_date = models.DateField(db_index=True, auto_now_add=True)
