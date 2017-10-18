@@ -1,8 +1,9 @@
 from django.http.response import  Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, InvalidPage
 from django.views.generic.base import TemplateView
 
+from page.forms import GoodForm
 from page.models import Category, Good
 
 
@@ -47,3 +48,23 @@ from page.models import Category, Good
 #         context = super(GoodDetailView, self).get_context_data(**kwargs)
 #         context['good'] = Good.objects.get(pk = id)
 #         return context
+
+
+def good_create(request, id):
+    if id == None:
+        cat = Category.objects.first()
+    else:
+        cat = Category.objects.get(id = id)
+        if request.method == 'POST':
+            form = GoodForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('index', id = cat.id)
+            else:
+                return render(request, 'good_add.html',
+                              {'category':cat, 'form': form})
+        else:
+            form = GoodForm(initial={'category':cat})
+            return render(request, 'good_add.html', {'category':cat,
+                                                     'form':form})
+
