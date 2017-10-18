@@ -2,6 +2,7 @@ from django.urls.base import reverse
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.views.generic.edit import ProcessFormView
 
+from page.forms import GoodForm
 from page.lwviews import CategoryListMixin
 from .models import New, Category, Good, BlogArticle
 
@@ -28,6 +29,7 @@ class GoodEditView(ProcessFormView):
 class GoodCreate(CreateView, GoodEditMixin):
     model = Good
     template_name = 'good_add.html'
+    form_class = GoodForm
     # success_url = '/'
 
     def get(self, request, *args, **kwargs):
@@ -49,6 +51,7 @@ class GoodUpdate(UpdateView, GoodEditMixin, GoodEditView):
     model = Good
     template_name = 'good_edit.html'
     pk_url_kwarg = 'id'
+    form_class = GoodForm
 
     def post(self, request, *args, **kwargs):
         self.success_url = reverse('index',
