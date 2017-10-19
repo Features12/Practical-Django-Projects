@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields import PositiveSmallIntegerField
 
 CATEGORIES = (
     (1, 'Metla'),
@@ -23,6 +24,10 @@ class Good(models.Model):
     descriptions = models.TextField()
     in_stock = models.BooleanField(default=True, db_index=True, verbose_name='In Stock')
     price = models.FloatField(null=True, blank=True)
+    thumbnail_width = PositiveSmallIntegerField()
+    thumbnail_height = PositiveSmallIntegerField()
+    thumbnail = models.ImageField(upload_to='goods/thumbnails/%Y/%m/%d', width_field=thumbnail_width,
+                                  height_field=thumbnail_height)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -37,6 +42,16 @@ class Good(models.Model):
         unique_together = ('category', 'name')
         verbose_name = 'Tovar'
         verbose_name_plural = 'Tovars'
+
+    def save(self, *args, **kwargs):
+        try:
+            this_record = Good.objects.get(id = self.id)
+            if this_record.thumbnail != self.thumbnail:
+                this_record.thumbnail.delete(save = False)
+        except:
+            pass
+        super(Good, self).save(*args, **kwargs)
+
 
         # category = models.IntegerField(choices=CATEGORIES, default=1, db_index=True)
 
