@@ -37,8 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.comments',
+    'django.contrib.flatpages',
     'page',
 ]
+
+
+SITE_ID = 1
+COMMENT_MSX_LENGTH = 1024
+COMMENTS_HIDE_REMOVED = False
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -113,6 +123,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/goods/'
 
 
 # Static files (CSS, JavaScript, Images)
