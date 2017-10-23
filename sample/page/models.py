@@ -1,5 +1,10 @@
 from django.db import models
 from django.db.models.fields import PositiveSmallIntegerField
+from django.contrib.comments.moderation import CommentModerator, moderator
+from django.core.urlresolvers import reverse
+
+moderator.reqister(Blog, BlogModerator)
+
 
 CATEGORIES = (
     (1, 'Metla'),
@@ -61,6 +66,9 @@ class Good(models.Model):
         #     else:
         #         return ''
 
+        def  get_absolute_url(self):
+            return reverse('good', kwargs={'good_id': self.id})
+
 
 class BlogArticle(models.Model):
     title = models.CharField(max_length=150, unique_for_month='pubdate')
@@ -69,6 +77,7 @@ class BlogArticle(models.Model):
 
     class Meta:
         db_table = 'BlogArticle'
+        permissions = (('can_blog', 'Ведение блога'),)
 
 
 class New(models.Model):
@@ -76,3 +85,17 @@ class New(models.Model):
     description = models.TextField()
     content = models.TextField()
     pub_date = models.DateField(db_index=True, auto_now_add=True)
+
+
+class Blog(models.Model):
+    title = models.CharField(max_length=120)
+    body = models.TextField()
+    pub_date = models.DateField(auto_now_add=True)
+    enable_comments = models.BooleanField(default=True)
+
+
+class BlogModerator(CommentModerator):
+    enable_field = 'enable_comments'
+    email_notification = True
+    auto_moderate_field = 'pub_date'
+    moderate_after = 30
