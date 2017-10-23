@@ -1,11 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from django.core.paginator import Paginator, InvalidPage
 from django.forms.models import modelformset_factory, inlineformset_factory
-from page.forms import GoodForm
+from page.forms import GoodForm, LoginForm
 from page.models import Category, Good
 
 
@@ -117,3 +118,41 @@ class GoodUpdate(TemplateView):
             return redirect('index', id = good.category.id)
         else:
             return super(GoodUpdate, self).post(request, *args, **kwargs)
+
+
+class LoginView(TemplateView):
+    form = None
+    template_name = 'template_login.html'
+
+    def get(self, request, *args, **kwargs):
+        self.form = LoginForm()
+        return super(LoginView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(LoginView, self).get_context_data(**kwargs)
+        context['form'] = self.form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.form = LoginForm(request.POST)
+        if self.form.is_valid():
+            user = authenticate(username = self.form.cleaned_data['username'],
+            password = self.form.cleaned_data['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('index')
+                else:
+                    return super(LoginView, self).get(request, *args, **kwargs)
+            else:
+                return super(LoginView, self).get(request, *args, **kwargs)
+        else:
+            return super(LoginView, self).get(request, *args, **kwargs)
+
+
+class LogoutView(TemplateView):
+    template_name = 'template_logout.html'
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super(LogoutView, self).get(request, *args, **kwargs)
