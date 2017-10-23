@@ -16,11 +16,19 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
+from page.models import Category
 from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^goods/', include('page.urls')),
+    url(r'^login/', 'django.contrib.auth.views.login',
+        {'template_name' :'login.html',
+         'extra_context':{'cats':Category.objects.all()}},
+        name='login'),
+    url(r'^logout/', 'django.contrib.auth.views.logout', name='logout'),
+    # url(r'logout/', 'django.contrib.auth.views.logout_then_login', name='logout'),
+    url(r'^comments/', include('django.contrib.comments.urls')),
 ]
 
 
