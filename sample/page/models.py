@@ -1,9 +1,11 @@
 from django.db import models
 from django.db.models.fields import PositiveSmallIntegerField
-from django.contrib.comments.moderation import CommentModerator, moderator
+# from django.contrib.comments.moderation import CommentModerator, moderator
 from django.core.urlresolvers import reverse
+from taggit.managers import TaggableManager
 
-moderator.reqister(Blog, BlogModerator)
+
+# moderator.reqister(Blog, BlogModerator)
 
 
 CATEGORIES = (
@@ -34,6 +36,7 @@ class Good(models.Model):
     thumbnail = models.ImageField(upload_to='goods/thumbnails/%Y/%m/%d', width_field=thumbnail_width,
                                   height_field=thumbnail_height)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    tags = TaggableManager(blank=True, verbose_name='Тэги')
 
     def __str__(self):
         s = self.name
@@ -94,8 +97,8 @@ class Blog(models.Model):
     enable_comments = models.BooleanField(default=True)
 
 
-class BlogModerator(CommentModerator):
-    enable_field = 'enable_comments'
-    email_notification = True
-    auto_moderate_field = 'pub_date'
-    moderate_after = 30
+# class BlogModerator(CommentModerator):
+#     enable_field = 'enable_comments'
+#     email_notification = True
+#     auto_moderate_field = 'pub_date'
+#     moderate_after = 30
