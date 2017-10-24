@@ -38,14 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django.contrib.comments',
+    # 'django.contrib.comments',
     'django.contrib.flatpages',
     'page',
+    'easy-thumbnails',
+    'taggit',
 ]
 
 
 SITE_ID = 1
-COMMENT_MSX_LENGTH = 1024
+COMMENT_MAX_LENGTH = 1024
 COMMENTS_HIDE_REMOVED = False
 
 
