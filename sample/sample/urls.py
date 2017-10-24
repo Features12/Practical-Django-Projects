@@ -28,7 +28,7 @@ urlpatterns = [
         name='login'),
     url(r'^logout/', 'django.contrib.auth.views.logout', name='logout'),
     # url(r'logout/', 'django.contrib.auth.views.logout_then_login', name='logout'),
-    url(r'^comments/', include('django.contrib.comments.urls')),
+    # url(r'^comments/', include('django.contrib.comments.urls')),
 ]
 
 
