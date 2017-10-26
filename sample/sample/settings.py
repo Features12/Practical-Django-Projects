@@ -35,14 +35,15 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages', # работа с текстом сообщений (вывод ошибок и т.д)
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    # 'django.contrib.comments',
-    'django.contrib.flatpages',
+    # 'django.contrib.comments', # работа с комментариями для какой-то категории сайта
+    'django.contrib.flatpages', # работа со статичными страницами
     'page',
-    'easy-thumbnails',
-    'taggit',
+    'easy-thumbnails', # работа с изображениями
+    'taggit', # работа с теггами (поиск по общим тегам)
+    'precise_bbcode', # работа с текстом (вывод специальных тегов)
 ]
 
 
