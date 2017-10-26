@@ -86,7 +86,7 @@ class BlogArticle(models.Model):
 class New(models.Model):
     title = models.CharField(max_length=100, db_index=True)
     description = models.TextField()
-    content = models.TextField()
+    content = BBCodeTextField() # TextField но в формате BBcode [i]{TEXT}[/i]
     pub_date = models.DateField(db_index=True, auto_now_add=True)
 
 
